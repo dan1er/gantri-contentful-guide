@@ -1,0 +1,28 @@
+{
+  "name": "docs-contentful",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "export": "next export"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@contentful/rich-text-react-renderer": "^16.1.0",
+    "@types/node": "^24.1.0",
+    "@types/react": "^19.1.9",
+    "contentful": "^11.7.15",
+    "contentful-management": "^11.54.4",
+    "dotenv": "^17.2.1",
+    "next": "^15.4.5",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "typescript": "^5.9.2"
+  }
+}

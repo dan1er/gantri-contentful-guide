@@ -1,0 +1,346 @@
+/* Panel Component Styles */
+.panel-component {
+  background: linear-gradient(135deg, #f6f9fc 0%, #ffffff 100%);
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 24px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.panel-background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.1;
+  z-index: 0;
+}
+
+.panel-component > *:not(.panel-background-image) {
+  position: relative;
+  z-index: 1;
+}
+
+.panel-component:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  border-color: #d1d5db;
+}
+
+.panel-component::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.panel-component:hover::before {
+  transform: scaleX(1);
+}
+
+.panel-component h3 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.panel-content {
+  color: #4b5563;
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+.panel-content h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #374151;
+  margin-top: 24px;
+  margin-bottom: 12px;
+}
+
+.panel-content p {
+  margin-bottom: 16px;
+}
+
+.panel-content ul,
+.panel-content ol {
+  margin-left: 20px;
+  margin-bottom: 16px;
+}
+
+.panel-content li {
+  margin-bottom: 8px;
+  color: #6b7280;
+}
+
+.panel-content blockquote {
+  border-left: 4px solid #10b981;
+  padding-left: 20px;
+  margin: 24px 0;
+  font-style: italic;
+  color: #6b7280;
+  background-color: #f0fdf4;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+/* Panel Items List */
+.panel-items {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.panel-item {
+  padding: 16px 20px;
+  margin-bottom: 12px;
+  background-color: #f9fafb;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+  position: relative;
+  padding-left: 48px;
+}
+
+.panel-item::before {
+  content: '→';
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #10b981;
+  font-size: 18px;
+  transition: transform 0.2s ease;
+}
+
+.panel-item:hover {
+  background-color: #f3f4f6;
+  border-color: #d1d5db;
+  transform: translateX(4px);
+}
+
+.panel-item:hover::before {
+  transform: translateY(-50%) translateX(4px);
+}
+
+/* Interactive Panel Items */
+.panel-item-button {
+  background: none;
+  border: none;
+  color: #3b82f6;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 16px;
+  padding: 0;
+  text-align: left;
+  width: 100%;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.panel-item-button:hover {
+  color: #2563eb;
+}
+
+.panel-item-button::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: #3b82f6;
+  transition: width 0.3s ease;
+}
+
+.panel-item-button:hover::after {
+  width: 100%;
+}
+
+/* Special Panel Variations */
+.panel-component.panel-principles {
+  background: linear-gradient(135deg, #fef3c7 0%, #fffbeb 100%);
+  border-color: #fbbf24;
+}
+
+.panel-component.panel-principles::before {
+  background: linear-gradient(90deg, #f59e0b 0%, #d97706 100%);
+}
+
+.panel-component.panel-technical {
+  background: linear-gradient(135deg, #dbeafe 0%, #eff6ff 100%);
+  border-color: #60a5fa;
+}
+
+.panel-component.panel-technical::before {
+  background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+}
+
+.panel-component.panel-sustainability {
+  background: linear-gradient(135deg, #d1fae5 0%, #ecfdf5 100%);
+  border-color: #34d399;
+}
+
+.panel-component.panel-sustainability::before {
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+}
+
+/* Icon Styles */
+.panel-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background-color: #f3f4f6;
+  border-radius: 10px;
+  font-size: 24px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .panel-component {
+    padding: 24px;
+  }
+  
+  .panel-component h3 {
+    font-size: 20px;
+  }
+  
+  .panel-item {
+    padding: 12px 16px;
+    padding-left: 40px;
+  }
+}
+
+/* Animation for panel entry */
+@keyframes panelSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.panel-component {
+  animation: panelSlideIn 0.5s ease forwards;
+}
+
+.panel-component:nth-child(1) { animation-delay: 0.1s; }
+.panel-component:nth-child(2) { animation-delay: 0.2s; }
+.panel-component:nth-child(3) { animation-delay: 0.3s; }
+.panel-component:nth-child(4) { animation-delay: 0.4s; }
+.panel-component:nth-child(5) { animation-delay: 0.5s; }
+.panel-component:nth-child(6) { animation-delay: 0.6s; }
+
+/* Rich Text Image Styles */
+.rich-text-image {
+  margin: 32px 0;
+  text-align: center;
+}
+
+.rich-text-img {
+  border-radius: 12px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  height: auto;
+}
+
+.rich-text-image-caption {
+  margin-top: 12px;
+  font-size: 14px;
+  color: #6b7280;
+  font-style: italic;
+}
+
+.rich-text-asset {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 20px;
+  background-color: #f3f4f6;
+  border-radius: 8px;
+  margin: 16px 0;
+  transition: all 0.2s ease;
+}
+
+.rich-text-asset:hover {
+  background-color: #e5e7eb;
+}
+
+.rich-text-asset a {
+  color: #3b82f6;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+/* Rich Text Typography */
+.rich-text-h1 {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 32px 0 16px;
+  color: #111827;
+}
+
+.rich-text-h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 24px 0 12px;
+  color: #111827;
+}
+
+.rich-text-h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 20px 0 10px;
+  color: #374151;
+}
+
+.rich-text-paragraph {
+  line-height: 1.7;
+  margin-bottom: 16px;
+  color: #4b5563;
+}
+
+.rich-text-link {
+  color: #3b82f6;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.rich-text-link:hover {
+  color: #2563eb;
+}
+
+.rich-text-link-external {
+  color: #3b82f6;
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.rich-text-code {
+  background-color: #f3f4f6;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+  font-size: 0.9em;
+  color: #e11d48;
+}

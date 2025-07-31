@@ -1,0 +1,12 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "regions": ["iad1"],
+  "env": {
+    "CONTENTFUL_SPACE_ID": "@contentful-space-id",
+    "CONTENTFUL_ACCESS_TOKEN": "@contentful-access-token",
+    "CONTENTFUL_PREVIEW_TOKEN": "@contentful-preview-token"
+  }
+}
