@@ -1,0 +1,134 @@
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modalContent {
+  background: white;
+  border-radius: 12px;
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.closeButton {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  color: #6b7280;
+  transition: color 0.2s;
+  z-index: 10;
+}
+
+.closeButton:hover {
+  color: #111827;
+}
+
+.modalTitle {
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0;
+  padding: 32px 32px 0;
+  color: #111827;
+}
+
+.modalBody {
+  padding: 24px 32px 32px;
+}
+
+.modalDescription {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #4b5563;
+  margin: 0 0 32px 0;
+}
+
+.examplesSection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.exampleCard {
+  text-align: center;
+}
+
+.exampleImage {
+  background: #f9fafb;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 12px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.exampleImage svg {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.exampleLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0;
+}
+
+.specificationsSection {
+  border-top: 1px solid #e5e7eb;
+  padding-top: 24px;
+}
+
+.specificationsTitle {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  color: #111827;
+}
+
+.specificationsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.specificationsList li {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #4b5563;
+  padding: 8px 0;
+  padding-left: 24px;
+  position: relative;
+}
+
+.specificationsList li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #00855B;
+  font-weight: bold;
+  font-size: 18px;
+  line-height: 1;
+}

@@ -4,18 +4,23 @@ import { useRouter } from 'next/router'
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import { richTextOptions } from '../../lib/rich-text-options'
 import { getSiteConfiguration, getAllPages, getPageBySlug } from '../../lib/contentful-dynamic'
+import { getConstraints } from '../../lib/contentful-constraints'
 import { ComponentRenderer, ProductCategoryGrid } from '../../components/DynamicComponents'
 import Modal from '../../components/Modal'
+import ConstraintCard from '../../components/ConstraintCard'
+import ConstraintModal from '../../components/ConstraintModal'
 
 interface Props {
   siteConfig: any
   page: any
   allPages: any[]
+  constraints?: any[]
 }
 
-export default function DynamicGuidePage({ siteConfig, page, allPages }: Props) {
+export default function DynamicGuidePage({ siteConfig, page, allPages, constraints }: Props) {
   const router = useRouter()
   const [showModal, setShowModal] = useState(false)
+  const [selectedConstraint, setSelectedConstraint] = useState<any>(null)
   
   if (!page) {
     return <div>Loading...</div>
@@ -123,6 +128,27 @@ export default function DynamicGuidePage({ siteConfig, page, allPages }: Props) 
                 <ProductCategoryGrid categories={productCategories} />
               )}
 
+              {/* Render manufacturing constraints for the printing parts section */}
+              {page.fields.slug === 'how-we-manufacture' && constraints && constraints.length > 0 && (
+                <div>
+                  <h3 style={{ marginTop: '40px', marginBottom: '24px', fontSize: '20px', fontWeight: '600' }}>Printing Parts - Manufacturing Constraints</h3>
+                  <div style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
+                    gap: '20px',
+                    marginBottom: '40px'
+                  }}>
+                    {constraints.map((constraint: any) => (
+                      <ConstraintCard
+                        key={constraint.sys.id}
+                        constraint={constraint}
+                        onClick={() => setSelectedConstraint(constraint)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Render other components */}
               {otherComponents.map((component: any, index: number) => (
                 <ComponentRenderer 
@@ -214,6 +240,13 @@ export default function DynamicGuidePage({ siteConfig, page, allPages }: Props) 
       {showModal && (
         <Modal onClose={() => setShowModal(false)} />
       )}
+
+      {selectedConstraint && (
+        <ConstraintModal
+          constraint={selectedConstraint}
+          onClose={() => setSelectedConstraint(null)}
+        />
+      )}
     </div>
   )
 }
@@ -245,6 +278,9 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     const siteConfig = await getSiteConfiguration()
     const page = await getPageBySlug(params?.slug as string)
     const allPages = await getAllPages()
+    
+    // Fetch constraints for manufacturing page
+    const constraints = params?.slug === 'how-we-manufacture' ? await getConstraints() : null
 
     if (!page) {
       return {
@@ -256,7 +292,8 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       props: {
         siteConfig,
         page,
-        allPages
+        allPages,
+        constraints
       },
       revalidate: 60,
     }
