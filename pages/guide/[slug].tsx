@@ -8,6 +8,8 @@ import { ComponentRenderer, ProductCategoryGrid } from '../../components/Dynamic
 import Modal from '../../components/Modal'
 import ConstraintModal from '../../components/ConstraintModal'
 import SectionRenderer from '../../components/SectionRenderer'
+import Navigation from '../../components/Navigation'
+import NavigationButtons from '../../components/NavigationButtons'
 
 interface Props {
   siteConfig: any
@@ -60,32 +62,11 @@ export default function DynamicGuidePage({ siteConfig, page, allPages }: Props) 
             <div className="sidebar-title">{siteConfig.fields.headerTitle}</div>
             <h2>{siteConfig.fields.guideTitle}</h2>
             
-            <ul className="nav-list">
-              {navigation.map((item: any, index: number) => {
-                const isActive = currentIndex === index
-                const hasSubItems = item.fields.label === 'How We Manufacture'
-                
-                return (
-                  <li key={index}>
-                    <div
-                      className={`nav-item ${isActive ? 'active' : ''}`}
-                      onClick={() => handleNavigation(item.fields.page.fields.slug)}
-                    >
-                      {item.fields.order}. {item.fields.label}
-                    </div>
-                    {hasSubItems && isActive && (
-                      <ul className="nav-subitems">
-                        <li className="nav-subitem">Printing Parts</li>
-                        <li className="nav-subitem">Painting Parts</li>
-                        <li className="nav-subitem">Assembling the Product</li>
-                        <li className="nav-subitem">Quality Control</li>
-                        <li className="nav-subitem">Packing and Shipping</li>
-                      </ul>
-                    )}
-                  </li>
-                )
-              })}
-            </ul>
+            <Navigation 
+              items={navigation}
+              currentSlug={page.fields.slug}
+              onNavigate={handleNavigation}
+            />
           </aside>
 
           <main className="content">
@@ -130,24 +111,22 @@ export default function DynamicGuidePage({ siteConfig, page, allPages }: Props) 
               ))}
 
 
-              <div className="navigation-buttons">
-                {currentIndex > 0 && (
-                  <button 
-                    className="nav-button secondary" 
-                    onClick={() => handleNavigation(navigation[currentIndex - 1].fields.page.fields.slug)}
-                  >
-                    ← {page.fields.navigationButtons?.prev?.label || `Back to ${navigation[currentIndex - 1].fields.label}`}
-                  </button>
-                )}
-                {currentIndex < navigation.length - 1 && (
-                  <button 
-                    className="nav-button primary" 
-                    onClick={() => handleNavigation(navigation[currentIndex + 1].fields.page.fields.slug)}
-                  >
-                    {page.fields.navigationButtons?.next?.label || navigation[currentIndex + 1].fields.label} →
-                  </button>
-                )}
-              </div>
+              <NavigationButtons
+                prevPage={
+                  currentIndex > 0 ? {
+                    slug: navigation[currentIndex - 1].fields.page.fields.slug,
+                    label: page.fields.navigationButtons?.prev?.label || `Back to ${navigation[currentIndex - 1].fields.label}`,
+                    icon: page.fields.navigationButtons?.prev?.icon
+                  } : undefined
+                }
+                nextPage={
+                  currentIndex < navigation.length - 1 ? {
+                    slug: navigation[currentIndex + 1].fields.page.fields.slug,
+                    label: page.fields.navigationButtons?.next?.label || navigation[currentIndex + 1].fields.label,
+                    icon: page.fields.navigationButtons?.next?.icon
+                  } : undefined
+                }
+              />
             </div>
           </main>
         </div>

@@ -1,0 +1,39 @@
+.gridContainer {
+  margin: 32px 0;
+}
+
+.gridTitle {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  color: #000000;
+}
+
+.constraintsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.defaultGrid {
+  display: grid;
+  gap: 20px;
+}
+
+.gridItem {
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.gridItem h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.gridItem p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #666666;
+}

@@ -2,6 +2,7 @@ import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import { richTextOptions } from '../lib/rich-text-options'
 import ConstraintCard from './ConstraintCard'
 import { ComponentRenderer } from './DynamicComponents'
+import GridRenderer from './GridRenderer'
 import styles from './SectionRenderer.module.css'
 
 interface SectionRendererProps {
@@ -55,13 +56,26 @@ export default function SectionRenderer({ section, onConstraintClick, onModalCli
       ) : (
         components && components.length > 0 && (
           <div className={styles.components}>
-            {components.map((component: any, index: number) => (
-              <ComponentRenderer
-                key={index}
-                component={component}
-                onModalClick={onModalClick}
-              />
-            ))}
+            {components.map((component: any, index: number) => {
+              // Handle Grid components
+              if (component.sys.contentType?.sys.id === 'grid') {
+                return (
+                  <GridRenderer
+                    key={component.sys.id}
+                    grid={component}
+                    onConstraintClick={onConstraintClick}
+                  />
+                )
+              }
+              // Handle other components
+              return (
+                <ComponentRenderer
+                  key={index}
+                  component={component}
+                  onModalClick={onModalClick}
+                />
+              )
+            })}
           </div>
         )
       )}
