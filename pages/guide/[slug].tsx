@@ -58,15 +58,30 @@ export default function DynamicGuidePage({ siteConfig, page, allPages }: Props) 
             <h2>{siteConfig.fields.guideTitle}</h2>
             
             <ul className="nav-list">
-              {navigation.map((item: any, index: number) => (
-                <li
-                  key={index}
-                  className={`nav-item ${currentIndex === index ? 'active' : ''}`}
-                  onClick={() => handleNavigation(item.fields.page.fields.slug)}
-                >
-                  {item.fields.order}. {item.fields.label}
-                </li>
-              ))}
+              {navigation.map((item: any, index: number) => {
+                const isActive = currentIndex === index
+                const hasSubItems = item.fields.label === 'How We Manufacture'
+                
+                return (
+                  <li key={index}>
+                    <div
+                      className={`nav-item ${isActive ? 'active' : ''}`}
+                      onClick={() => handleNavigation(item.fields.page.fields.slug)}
+                    >
+                      {item.fields.order}. {item.fields.label}
+                    </div>
+                    {hasSubItems && isActive && (
+                      <ul className="nav-subitems">
+                        <li className="nav-subitem">Printing Parts</li>
+                        <li className="nav-subitem">Painting Parts</li>
+                        <li className="nav-subitem">Assembling the Product</li>
+                        <li className="nav-subitem">Quality Control</li>
+                        <li className="nav-subitem">Packing and Shipping</li>
+                      </ul>
+                    )}
+                  </li>
+                )
+              })}
             </ul>
           </aside>
 
