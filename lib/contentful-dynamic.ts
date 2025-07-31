@@ -3,46 +3,78 @@ import { createClient } from 'contentful'
 const space = process.env.CONTENTFUL_SPACE_ID
 const accessToken = process.env.CONTENTFUL_ACCESS_TOKEN
 
-const client = createClient({
-  space: space!,
-  accessToken: accessToken!,
-})
+if (!space || !accessToken) {
+  console.warn('Contentful environment variables are not set')
+}
+
+const client = space && accessToken ? createClient({
+  space: space,
+  accessToken: accessToken,
+}) : null
 
 export async function getSiteConfiguration() {
-  const entries = await client.getEntries({
-    content_type: 'siteConfiguration',
-    limit: 1,
-    include: 3,
-  })
+  if (!client) return null
   
-  return entries.items[0]
+  try {
+    const entries = await client.getEntries({
+      content_type: 'siteConfiguration',
+      limit: 1,
+      include: 3,
+    })
+    
+    return entries.items[0]
+  } catch (error) {
+    console.error('Error fetching site configuration:', error)
+    return null
+  }
 }
 
 export async function getAllPages() {
-  const entries = await client.getEntries({
-    content_type: 'page',
-    include: 3,
-  })
+  if (!client) return []
   
-  return entries.items
+  try {
+    const entries = await client.getEntries({
+      content_type: 'page',
+      include: 3,
+    })
+    
+    return entries.items
+  } catch (error) {
+    console.error('Error fetching pages:', error)
+    return []
+  }
 }
 
 export async function getPageBySlug(slug: string) {
-  const entries = await client.getEntries({
-    content_type: 'page',
-    'fields.slug': slug,
-    include: 3,
-  })
+  if (!client) return null
   
-  return entries.items[0]
+  try {
+    const entries = await client.getEntries({
+      content_type: 'page',
+      'fields.slug': slug,
+      include: 3,
+    })
+    
+    return entries.items[0]
+  } catch (error) {
+    console.error('Error fetching page by slug:', error)
+    return null
+  }
 }
 
 export async function getNavigationItems() {
-  const entries = await client.getEntries({
-    content_type: 'navigationItem',
-    order: 'fields.order',
-    include: 2,
-  })
+  if (!client) return []
   
-  return entries.items
+  try {
+    const entries = await client.getEntries({
+      content_type: 'navigationItem',
+      order: 'fields.order',
+      include: 2,
+    })
+    
+    return entries.items
+  } catch (error) {
+    console.error('Error fetching navigation items:', error)
+    return []
+  }
 }

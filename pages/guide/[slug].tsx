@@ -204,15 +204,24 @@ export default function DynamicGuidePage({ siteConfig, page, allPages }: Props) 
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const pages = await getAllPages()
-  
-  const paths = pages.map((page) => ({
-    params: { slug: page.fields.slug }
-  }))
+  try {
+    const pages = await getAllPages()
+    
+    const paths = pages.map((page) => ({
+      params: { slug: page.fields.slug }
+    }))
 
-  return {
-    paths,
-    fallback: 'blocking'
+    return {
+      paths,
+      fallback: 'blocking'
+    }
+  } catch (error) {
+    console.error('Error fetching pages:', error)
+    // Return empty paths if Contentful is not configured
+    return {
+      paths: [],
+      fallback: 'blocking'
+    }
   }
 }
 
