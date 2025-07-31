@@ -52,7 +52,7 @@ export async function getPageBySlug(slug: string) {
     const entries = await client.getEntries({
       content_type: 'page',
       'fields.slug': slug,
-      include: 3,
+      include: 4,  // Increased to get nested section content
     })
     
     return entries.items[0]

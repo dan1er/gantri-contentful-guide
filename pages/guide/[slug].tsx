@@ -4,20 +4,18 @@ import { useRouter } from 'next/router'
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer'
 import { richTextOptions } from '../../lib/rich-text-options'
 import { getSiteConfiguration, getAllPages, getPageBySlug } from '../../lib/contentful-dynamic'
-import { getConstraints } from '../../lib/contentful-constraints'
 import { ComponentRenderer, ProductCategoryGrid } from '../../components/DynamicComponents'
 import Modal from '../../components/Modal'
-import ConstraintCard from '../../components/ConstraintCard'
 import ConstraintModal from '../../components/ConstraintModal'
+import SectionRenderer from '../../components/SectionRenderer'
 
 interface Props {
   siteConfig: any
   page: any
   allPages: any[]
-  constraints?: any[]
 }
 
-export default function DynamicGuidePage({ siteConfig, page, allPages, constraints }: Props) {
+export default function DynamicGuidePage({ siteConfig, page, allPages }: Props) {
   const router = useRouter()
   const [showModal, setShowModal] = useState(false)
   const [selectedConstraint, setSelectedConstraint] = useState<any>(null)
@@ -103,50 +101,23 @@ export default function DynamicGuidePage({ siteConfig, page, allPages, constrain
                 </div>
               )}
 
-              {/* Render milestones if this is the getting started page */}
-              {page.fields.slug === 'getting-started' && (
-                <div className="milestones">
-                  <h3 style={{ marginBottom: '20px' }}>Key Milestones:</h3>
-                  <div className="milestone" data-step="1">
-                    <div className="milestone-title">Review Quick Start Guide</div>
-                  </div>
-                  <div className="milestone" data-step="2">
-                    <div className="milestone-title">Concept Ideation</div>
-                  </div>
-                  <div className="milestone" data-step="3">
-                    <div className="milestone-title">Concept Submission</div>
-                  </div>
-                  <div className="milestone" data-step="4">
-                    <div className="milestone-title">Product Development</div>
-                    <div>Once your concept is approved, product development begins.</div>
-                  </div>
+              {/* Render page sections if available */}
+              {page.fields.sections && page.fields.sections.length > 0 && (
+                <div>
+                  {page.fields.sections.map((section: any, index: number) => (
+                    <SectionRenderer
+                      key={section.sys.id}
+                      section={section}
+                      onConstraintClick={setSelectedConstraint}
+                      onModalClick={() => setShowModal(true)}
+                    />
+                  ))}
                 </div>
               )}
 
               {/* Render product categories grid */}
               {productCategories.length > 0 && (
                 <ProductCategoryGrid categories={productCategories} />
-              )}
-
-              {/* Render manufacturing constraints for the printing parts section */}
-              {page.fields.slug === 'how-we-manufacture' && constraints && constraints.length > 0 && (
-                <div>
-                  <h3 style={{ marginTop: '40px', marginBottom: '24px', fontSize: '20px', fontWeight: '600' }}>Printing Parts - Manufacturing Constraints</h3>
-                  <div style={{ 
-                    display: 'grid', 
-                    gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))',
-                    gap: '20px',
-                    marginBottom: '40px'
-                  }}>
-                    {constraints.map((constraint: any) => (
-                      <ConstraintCard
-                        key={constraint.sys.id}
-                        constraint={constraint}
-                        onClick={() => setSelectedConstraint(constraint)}
-                      />
-                    ))}
-                  </div>
-                </div>
               )}
 
               {/* Render other components */}
@@ -158,61 +129,6 @@ export default function DynamicGuidePage({ siteConfig, page, allPages, constrain
                 />
               ))}
 
-              {/* Add specific content for pages */}
-              {page.fields.slug === 'product-categories' && (
-                <p style={{ marginTop: '30px' }}>
-                  All categories can be designed to produce directed or ambient lighting, or a hybrid of the two.
-                </p>
-              )}
-
-              {page.fields.slug === 'pricing-considerations' && (
-                <div style={{ marginTop: '30px' }}>
-                  <h3 style={{ marginBottom: '20px' }}>Key Pricing Factors:</h3>
-                  <div className="milestone" data-step="💰">
-                    <div className="milestone-title">Material Usage</div>
-                    <div>The amount of material used directly impacts cost. Optimize your design to minimize material while maintaining structural integrity.</div>
-                  </div>
-                  <div className="milestone" data-step="⏱">
-                    <div className="milestone-title">Print Time</div>
-                    <div>Complex geometries and larger parts require longer print times, increasing production costs.</div>
-                  </div>
-                  <div className="milestone" data-step="🔧">
-                    <div className="milestone-title">Assembly Complexity</div>
-                    <div>Designs requiring multiple parts or complex assembly processes will have higher labor costs.</div>
-                  </div>
-                  <div className="milestone" data-step="🎨">
-                    <div className="milestone-title">Finishing Requirements</div>
-                    <div>Parts requiring painting, sanding, or special finishes add to the overall cost.</div>
-                  </div>
-                </div>
-              )}
-
-              {page.fields.slug === 'concept-submission' && (
-                <>
-                  <div style={{ marginTop: '30px' }}>
-                    <h3 style={{ marginBottom: '20px' }}>Submission Requirements:</h3>
-                    <div className="milestone" data-step="📐">
-                      <div className="milestone-title">3D Model Files</div>
-                      <div>Submit your design in STL or OBJ format. Ensure all parts are properly oriented and scaled.</div>
-                    </div>
-                    <div className="milestone" data-step="📄">
-                      <div className="milestone-title">Design Documentation</div>
-                      <div>Include assembly instructions, material specifications, and any special finishing requirements.</div>
-                    </div>
-                    <div className="milestone" data-step="💭">
-                      <div className="milestone-title">Concept Statement</div>
-                      <div>Provide a brief description of your design inspiration and target market.</div>
-                    </div>
-                    <div className="milestone" data-step="📏">
-                      <div className="milestone-title">Technical Drawings</div>
-                      <div>Include dimensioned drawings showing key measurements and assembly details.</div>
-                    </div>
-                  </div>
-                  <p style={{ marginTop: '30px', fontStyle: 'italic' }}>
-                    After submission, our team will review your concept and provide feedback within 5-7 business days.
-                  </p>
-                </>
-              )}
 
               <div className="navigation-buttons">
                 {currentIndex > 0 && (
@@ -278,9 +194,6 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
     const siteConfig = await getSiteConfiguration()
     const page = await getPageBySlug(params?.slug as string)
     const allPages = await getAllPages()
-    
-    // Fetch constraints for manufacturing page
-    const constraints = params?.slug === 'how-we-manufacture' ? await getConstraints() : null
 
     if (!page) {
       return {
@@ -292,8 +205,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
       props: {
         siteConfig,
         page,
-        allPages,
-        constraints
+        allPages
       },
       revalidate: 60,
     }
