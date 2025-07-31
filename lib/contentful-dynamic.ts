@@ -38,7 +38,7 @@ export async function getAllPages() {
       include: 3,
     })
     
-    return entries.items
+    return entries.items.filter(item => item.fields.slug)
   } catch (error) {
     console.error('Error fetching pages:', error)
     return []

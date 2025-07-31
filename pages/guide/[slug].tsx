@@ -223,7 +223,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     const pages = await getAllPages()
     
     const paths = pages.map((page) => ({
-      params: { slug: page.fields.slug }
+      params: { slug: String(page.fields.slug) }
     }))
 
     return {
