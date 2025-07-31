@@ -68,7 +68,7 @@ export async function getNavigationItems() {
   try {
     const entries = await client.getEntries({
       content_type: 'navigationItem',
-      order: 'fields.order',
+      order: ['fields.order'],
       include: 2,
     })
     

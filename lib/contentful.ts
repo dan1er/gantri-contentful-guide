@@ -11,7 +11,7 @@ const client = createClient({
 export async function getQuickStartGuideSections() {
   const entries = await client.getEntries({
     content_type: 'quickStartGuideSection',
-    order: 'fields.sectionNumber',
+    order: ['fields.sectionNumber'],
     include: 2,
   })
   
@@ -21,7 +21,7 @@ export async function getQuickStartGuideSections() {
 export async function getProductCategories() {
   const entries = await client.getEntries({
     content_type: 'productCategory',
-    order: 'fields.order',
+    order: ['fields.order'],
   })
   
   return entries.items
